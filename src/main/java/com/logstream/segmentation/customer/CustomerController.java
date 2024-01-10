@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.logstream.segmentation.segment.Segment;
 
 @RestController
 @RequestMapping(path="/api/customers",

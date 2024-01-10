@@ -1,0 +1,373 @@
+openapi: 3.0.3
+info:
+  title: user segmentation service
+  version: 0.0.1
+servers: 
+  - url: http://localhost:8080/api
+    description: main server
+paths:
+  /customers:
+    get:
+      summary: get all customers
+      tags:
+        - Customers
+      operationId: getCustomers
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:  
+              schema:
+                $ref: "#/components/schemas/Customers"
+        "404":
+          description: not found
+          
+ 
+    post:
+      summary: create a customer
+      tags:
+        - Customers
+      operationId: createCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
+      responses:
+        "201":
+          description: adds a customer
+  
+  /segments:
+    post:
+      summary: create a segment
+      tags:
+        - Segments
+      operationId: createSegment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Segment"
+      responses:
+        "201":
+          description: adds a segment
+  /segments/{segmentId}:
+    delete:
+      summary: deletes segment by id
+      tags:
+        - Segments
+      operationId: deleteSegment
+      parameters:
+        - name: segmentId
+          in: path
+          required: true
+          description: unique id
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "204":
+          description: deletes a segment
+  
+  /segments/customers/{customerId}:
+    delete:
+      summary: deletes relation segment-customers by id
+      tags:
+        - RelationSegmentCustomer
+      operationId: deletes relation between customer and slug
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: unique id
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "204":
+          description: deletes relatoin between customer and slug
+    get:
+      summary: get segment with relation segment-customer by id
+      tags:
+        - RelationSegmentCustomer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: unique customer id
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: reads segment with relation segment-customer by id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Segments"
+        "404":
+          description: not found
+    post:
+      summary: create relation segment-customer by id
+      tags:
+        - RelationSegmentCustomer
+      operationId: createRelationSegmentCustomer
+      parameters:
+          - name: customerId
+            in: path
+            required: true
+            description: unique customer id
+            schema:
+              type: integer
+              example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                example: TEST_MESSAGE
+      responses:
+        "200":
+          desctiption: creates relation between segment and customer
+    
+            
+        
+            
+
+components:
+  schemas:
+    Customer:
+      type: object
+      required:
+        - firstName
+        - lastName
+      properties:
+        id:
+          type: integer
+          example: 1
+        firstName:
+          type: string
+          example: Kirill
+        lastName:
+          type: string
+          example: Ershov
+    Customers:
+      type: array
+      items:
+        $ref: "#/components/schemas/Customer"
+    
+    Segment:
+      type: object
+      required:
+        - slug
+      properties:
+        id:
+          type: integer
+          example: 1
+        slug:
+          type: string
+          example: MESSAGE_TEST
+        createdAt:
+          type: string
+    Segments:
+      type: array
+      items:
+        $ref: "#/components/schemas/Segment"
+      
+      
+        
+      openapi: 3.0.3
+info:
+  title: user segmentation service
+  version: 0.0.1
+servers: 
+  - url: http://localhost:8080/api
+    description: main server
+paths:
+  /customers:
+    get:
+      summary: get all customers
+      tags:
+        - Customers
+      operationId: getCustomers
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:  
+              schema:
+                $ref: "#/components/schemas/Customers"
+        "404":
+          description: not found
+          
+ 
+    post:
+      summary: create a customer
+      tags:
+        - Customers
+      operationId: createCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
+      responses:
+        "201":
+          description: adds a customer
+  
+  /segments:
+    post:
+      summary: create a segment
+      tags:
+        - Segments
+      operationId: createSegment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Segment"
+      responses:
+        "201":
+          description: adds a segment
+  /segments/{segmentId}:
+    delete:
+      summary: deletes segment by id
+      tags:
+        - Segments
+      operationId: deleteSegment
+      parameters:
+        - name: segmentId
+          in: path
+          required: true
+          description: unique id
+          schema:
+            type: integer
+            example: 1
+        - name: slug
+          in: query
+          description: unique slug name
+          schema:
+            type: string
+        
+      responses:
+        "204":
+          description: deletes a segment
+  
+  /segments/customers/{customerId}:
+    delete:
+      summary: deletes relation segment-customers by id
+      tags:
+        - RelationSegmentCustomer
+      operationId: deletes relation between customer and slug
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: unique id
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "204":
+          description: deletes relatoin between customer and slug
+    get:
+      summary: get segment with relation segment-customer by id
+      tags:
+        - RelationSegmentCustomer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: unique customer id
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: reads segment with relation segment-customer by id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Segments"
+        "404":
+          description: not found
+    post:
+      summary: create relation segment-customer by id
+      tags:
+        - RelationSegmentCustomer
+      operationId: createRelationSegmentCustomer
+      parameters:
+          - name: customerId
+            in: path
+            required: true
+            description: unique customer id
+            schema:
+              type: integer
+              example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                example: TEST_MESSAGE
+      responses:
+        "200":
+          desctiption: creates relation between segment and customer
+    
+            
+        
+            
+
+components:
+  schemas:
+    Customer:
+      type: object
+      required:
+        - firstName
+        - lastName
+      properties:
+        id:
+          type: integer
+          example: 1
+        firstName:
+          type: string
+          example: Kirill
+        lastName:
+          type: string
+          example: Ershov
+    Customers:
+      type: array
+      items:
+        $ref: "#/components/schemas/Customer"
+    
+    Segment:
+      type: object
+      required:
+        - slug
+      properties:
+        id:
+          type: integer
+          example: 1
+        slug:
+          type: string
+          example: MESSAGE_TEST
+        createdAt:
+          type: string
+    Segments:
+      type: array
+      items:
+        $ref: "#/components/schemas/Segment"
+      
+      
+        
+      
